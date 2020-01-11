@@ -74,6 +74,11 @@ const getCellId = (colId, rowId) => colId + '_' + rowId;
 const getCell = (colId, rowId) =>
   document.getElementById(getCellId(colId, rowId));
 
+const getRandomCords = (maxX, maxY) => [
+  Math.round(Math.random() * (maxX - 1)),
+  Math.round(Math.random() * (maxY - 1))
+];
+
 const createCell = function(grid, colId, rowId) {
   const cell = document.createElement('div');
   cell.className = 'cell';
@@ -162,7 +167,10 @@ const randomlyTurnSnake = snake => {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
-  const food = new Food(5, 5);
+  const randomCord = getRandomCords(NUM_OF_COLS, NUM_OF_ROWS);
+  console.log(randomCord);
+
+  const food = new Food(...randomCord);
 
   setup(snake, ghostSnake);
   drawFood(food);
