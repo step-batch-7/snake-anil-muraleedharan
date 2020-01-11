@@ -52,6 +52,17 @@ class Snake {
   }
 }
 
+class Food {
+  constructor(colId, rowId) {
+    this.colId = colId;
+    this.rowId = rowId;
+  }
+
+  get position() {
+    return [this.colId, this.rowId];
+  }
+}
+
 const NUM_OF_COLS = 100;
 const NUM_OF_ROWS = 60;
 
@@ -90,6 +101,12 @@ const drawSnake = function(snake) {
     const cell = getCell(colId, rowId);
     cell.classList.add(snake.species);
   });
+};
+
+const drawFood = function(food) {
+  let [colId, rowId] = food.position;
+  const cell = getCell(colId, rowId);
+  cell.classList.add('food');
 };
 
 const handleKeyPress = snake => {
@@ -145,8 +162,10 @@ const randomlyTurnSnake = snake => {
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
+  const food = new Food(5, 5);
 
   setup(snake, ghostSnake);
+  drawFood(food);
 
   setInterval(animateSnakes, 200, snake, ghostSnake);
   setInterval(randomlyTurnSnake, 500, ghostSnake);
