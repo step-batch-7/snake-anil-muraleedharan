@@ -66,6 +66,10 @@ class Snake {
 
     this.positions.push([headX + deltaX, headY + deltaY]);
   }
+
+  grow() {
+    this.positions.unshift(this.previousTail);
+  }
 }
 
 class Food {
@@ -99,6 +103,10 @@ class Game {
 
   updateFoodPosition(coords) {
     this.food.updatePosition(coords);
+  }
+
+  growSnake() {
+    this.snake.grow();
   }
 
   get isSnakeEatenFood() {
@@ -240,6 +248,7 @@ const runGame = function(game) {
   randomlyTurnSnake(game.ghostSnake);
 
   if (game.isSnakeEatenFood) {
+    game.growSnake();
     eraseFood(game.foodPosition);
     game.updateFoodPosition(getRandomCords(NUM_OF_COLS, NUM_OF_ROWS));
     drawFood(game.foodPosition);
