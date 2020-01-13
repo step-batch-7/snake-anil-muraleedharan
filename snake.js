@@ -42,6 +42,10 @@ class Snake {
     return this.type;
   }
 
+  get headPosition() {
+    return this.positions[0].slice();
+  }
+
   turnLeft() {
     this.direction.turnLeft();
   }
@@ -62,12 +66,15 @@ class Snake {
 
 class Food {
   constructor(colId, rowId) {
-    this.colId = colId;
-    this.rowId = rowId;
+    this.coords = [colId, rowId];
   }
 
   get position() {
-    return [this.colId, this.rowId];
+    return this.coords.slice();
+  }
+
+  updatePosition(coords) {
+    this.coords = coords;
   }
 }
 
@@ -84,6 +91,16 @@ class Game {
 
   snakeTurnRight() {
     this.snake.turnRight();
+  }
+
+  updateFoodPosition(coords) {
+    this.food.updatePosition(coords);
+  }
+
+  get isSnakeEatenFood() {
+    let [snakeHeadXCord, snakeHeadYCord] = this.snake.headPosition;
+    let [foodPosXCord, foodPosYCord] = this.food.position;
+    return snakeHeadXCord == foodPosXCord && snakeHeadYCord == foodPosYCord;
   }
 }
 
@@ -136,6 +153,12 @@ const drawFood = function(food) {
   let [colId, rowId] = food.position;
   const cell = getCell(colId, rowId);
   cell.classList.add('food');
+};
+
+const eraseFood = function(food) {
+  let [colId, rowId] = food.position;
+  const cell = getCell(colId, rowId);
+  cell.classList.remove('food');
 };
 
 const handleKeyPress = game => {
@@ -192,6 +215,12 @@ const randomlyTurnSnake = snake => {
 const runGame = function(game) {
   animateSnakes(game);
   randomlyTurnSnake(game.ghostSnake);
+
+  if (game.isSnakeEatenFood) {
+    eraseFood(game.food);
+    game.updateFoodPosition(getRandomCords(NUM_OF_COLS, NUM_OF_ROWS));
+    drawFood(game.food);
+  }
 };
 
 const main = function() {
