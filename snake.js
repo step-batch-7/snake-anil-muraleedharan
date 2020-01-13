@@ -164,9 +164,9 @@ const setup = game => {
   drawSnake(game.ghostSnake);
 };
 
-const animateSnakes = (snake, ghostSnake) => {
-  moveAndDrawSnake(snake);
-  moveAndDrawSnake(ghostSnake);
+const animateSnakes = game => {
+  moveAndDrawSnake(game.snake);
+  moveAndDrawSnake(game.ghostSnake);
 };
 
 const randomlyTurnSnake = snake => {
@@ -174,6 +174,11 @@ const randomlyTurnSnake = snake => {
   if (x > 50) {
     snake.turnLeft();
   }
+};
+
+const runGame = function(game) {
+  animateSnakes(game);
+  randomlyTurnSnake(game.ghostSnake);
 };
 
 const main = function() {
@@ -186,6 +191,5 @@ const main = function() {
   setup(game);
   drawFood(food);
 
-  setInterval(animateSnakes, 200, snake, ghostSnake);
-  setInterval(randomlyTurnSnake, 500, ghostSnake);
+  setInterval(runGame, 200, game);
 };
