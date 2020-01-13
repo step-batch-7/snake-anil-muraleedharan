@@ -20,6 +20,10 @@ class Direction {
   turnLeft() {
     this.heading = (this.heading + 1) % 4;
   }
+
+  turnRight() {
+    this.heading = (this.heading + 3) % 4;
+  }
 }
 
 class Snake {
@@ -40,6 +44,10 @@ class Snake {
 
   turnLeft() {
     this.direction.turnLeft();
+  }
+
+  turnRight() {
+    this.direction.turnRight();
   }
 
   move() {
@@ -72,6 +80,10 @@ class Game {
 
   snakeTurnLeft() {
     this.snake.turnLeft();
+  }
+
+  snakeTurnRight() {
+    this.snake.turnRight();
   }
 }
 
@@ -127,7 +139,8 @@ const drawFood = function(food) {
 };
 
 const handleKeyPress = game => {
-  game.snakeTurnLeft();
+  if (event.key === 'ArrowRight') game.snakeTurnRight();
+  if (event.key === 'ArrowLeft') game.snakeTurnLeft();
 };
 
 const moveAndDrawSnake = function(snake) {
