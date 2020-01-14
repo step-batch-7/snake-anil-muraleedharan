@@ -86,11 +86,27 @@ class Food {
   }
 }
 
+class Score {
+  constructor(initialScore) {
+    this.score = initialScore;
+  }
+
+  update(incrementValue) {
+    this.score += incrementValue;
+  }
+
+  get currentScore() {
+    return this.score;
+  }
+}
+
 class Game {
-  constructor(snake, ghostSnake, food) {
+  constructor(snake, ghostSnake, food, score) {
     this.snake = snake;
     this.ghostSnake = ghostSnake;
     this.food = food;
+    this.lastFoodPosition = [0, 0];
+    this.score = score;
   }
 
   snakeTurnLeft() {
@@ -125,6 +141,23 @@ class Game {
 
   get foodPosition() {
     return this.food.position.slice();
+  }
+
+  get previousFoodPosition() {
+    return this.lastFoodPosition.slice();
+  }
+
+  get currentScore() {
+    return this.score.currentScore;
+  }
+
+  updateGameStatus() {
+    if (this.isSnakeEatenFood) {
+      this.growSnake();
+      this.lastFoodPosition = this.foodPosition;
+      this.updateFoodPosition(getRandomCords(NUM_OF_COLS, NUM_OF_ROWS));
+      this.score.update(5);
+    }
   }
 }
 
@@ -166,8 +199,6 @@ const eraseTail = function([colId, rowId], species) {
 };
 
 const drawSnake = function(snakePositions, species) {
-  console.log(snakePositions);
-
   snakePositions.forEach(([colId, rowId]) => {
     const cell = getCell(colId, rowId);
     cell.classList.add(species);
@@ -246,20 +277,19 @@ const randomlyTurnSnake = snake => {
 const runGame = function(game) {
   animateSnakes(game);
   randomlyTurnSnake(game.ghostSnake);
-
-  if (game.isSnakeEatenFood) {
-    game.growSnake();
-    eraseFood(game.foodPosition);
-    game.updateFoodPosition(getRandomCords(NUM_OF_COLS, NUM_OF_ROWS));
-    drawFood(game.foodPosition);
-  }
+  eraseFood(game.previousFoodPosition);
+  game.updateGameStatus();
+  drawFood(game.foodPosition);
+  let scoreDisplay = document.getElementById('score-box');
+  scoreDisplay.innerText = game.currentScore;
 };
 
 const main = function() {
   const snake = initSnake();
   const ghostSnake = initGhostSnake();
   const food = initFood();
-  const game = new Game(snake, ghostSnake, food);
+  const score = new Score(0);
+  const game = new Game(snake, ghostSnake, food, score);
 
   setup(game);
 
