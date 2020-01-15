@@ -115,7 +115,7 @@ const randomlyTurnSnake = snake => {
   }
 };
 
-const runGame = function(game) {
+const runGame = function(game, gameLoop) {
   animateSnakes(game);
   randomlyTurnSnake(game.ghostSnake);
   eraseFood(game.previousFoodPosition);
@@ -123,6 +123,10 @@ const runGame = function(game) {
   drawFood(game.foodPosition);
   let scoreDisplay = document.getElementById('score-box');
   scoreDisplay.innerText = game.currentScore;
+  if (game.hasSnakeEatenItself) {
+    clearInterval(gameLoop);
+    alert('Game Over');
+  }
 };
 
 const main = function() {
@@ -134,5 +138,5 @@ const main = function() {
 
   setup(game);
 
-  setInterval(runGame, 200, game);
+  const gameLoop = setInterval(() => runGame(game, gameLoop), 200);
 };

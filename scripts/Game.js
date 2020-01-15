@@ -23,6 +23,16 @@ class Game {
     this.snake.grow();
   }
 
+  get hasSnakeEatenItself() {
+    const snakeBody = this.snakePositions.slice(1);
+    const snakeHead = this.snake.headPosition;
+
+    const isHeadAtBodyPart = part =>
+      part.every((coord, index) => coord === snakeHead[index]);
+
+    return snakeBody.some(isHeadAtBodyPart);
+  }
+
   get isSnakeEatenFood() {
     let [snakeHeadXCord, snakeHeadYCord] = this.snake.headPosition;
     let [foodPosXCord, foodPosYCord] = this.food.position;
