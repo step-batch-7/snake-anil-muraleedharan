@@ -128,7 +128,7 @@ const runGame = function(game, gameLoop) {
   moveSnakes(game);
   if (game.hasSnakeEatenItself || game.isSnakeTouchedWall) {
     clearInterval(gameLoop);
-    alert('Game Over');
+    alert(`Game Over \n Your Total Score:${game.currentScore}`);
     return;
   }
   animateSnakes(game);
