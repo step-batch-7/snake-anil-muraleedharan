@@ -68,6 +68,12 @@ class Game {
     return snakeHeadXCord == foodPosXCord && snakeHeadYCord == foodPosYCord;
   }
 
+  get isGhostSnakeEatenFood() {
+    let [snakeHeadXCord, snakeHeadYCord] = this.#ghostSnake.headPosition;
+    let [foodPosXCord, foodPosYCord] = this.#food.position;
+    return snakeHeadXCord == foodPosXCord && snakeHeadYCord == foodPosYCord;
+  }
+
   get snakePositions() {
     return this.#snake.location.slice();
   }
@@ -110,6 +116,10 @@ class Game {
       this.#lastFoodPosition = this.foodPosition;
       this.updateFoodPosition(getRandomCords(NUM_OF_COLS, NUM_OF_ROWS));
       this.#score.update(5);
+    }
+    if (this.isGhostSnakeEatenFood) {
+      this.#lastFoodPosition = this.foodPosition;
+      this.updateFoodPosition(getRandomCords(NUM_OF_COLS, NUM_OF_ROWS));
     }
   }
 }
