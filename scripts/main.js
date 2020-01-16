@@ -102,20 +102,20 @@ const moveSnakes = function(game) {
   game.moveGhostSnake();
 };
 
-const animateSnake = function(snake) {
-  eraseTail(snake.previousTailPosition, snake.species);
-  drawSnake(snake.location, snake.species);
+const animateSnake = function(snakeData) {
+  eraseTail(snakeData.previousTailPosition, snakeData.species);
+  drawSnake(snakeData.location, snakeData.species);
 };
 
 const animateSnakes = game => {
-  animateSnake(game.snake);
-  animateSnake(game.ghostSnake);
+  animateSnake(game.snakeData);
+  animateSnake(game.ghostSnakeData);
 };
 
-const randomlyTurnSnake = snake => {
+const randomlyTurnSnake = game => {
   let x = Math.random() * 100;
-  if (x > 50) {
-    snake.turnLeft();
+  if (x < 50) {
+    game.ghostTurnLeft();
   }
 };
 
@@ -136,7 +136,7 @@ const runGame = function(game, gameLoop) {
   game.updateGameStatus();
   drawFood(game.foodPosition);
   updateScoreDisplay(game.currentScore);
-  randomlyTurnSnake(game.ghostSnake);
+  randomlyTurnSnake(game);
 };
 
 const main = function() {

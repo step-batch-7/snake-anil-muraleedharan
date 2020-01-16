@@ -1,13 +1,14 @@
 class Food {
+  #coords;
   constructor(colId, rowId) {
-    this.coords = [colId, rowId];
+    this.#coords = [colId, rowId];
   }
 
   get position() {
-    return this.coords.slice();
+    return this.#coords.slice();
   }
 
   updatePosition(coords) {
-    this.coords = coords;
+    this.#coords = coords;
   }
 }
