@@ -15,7 +15,8 @@ class Snake {
   }
 
   get headPosition() {
-    return this.positions[0].slice();
+    const length = this.positions.length;
+    return this.positions[length - 1].slice();
   }
 
   get previousTailPosition() {
